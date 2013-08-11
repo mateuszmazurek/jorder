@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // jOrder, index-based data manipulation library
-// Copyright (c) 2010-2011 Dan Stocker, http://jorder.net
+// Copyright (c) 2010-2011 Dan Stocker, 2013- Mateusz Mazurek
 ////////////////////////////////////////////////////////////////////////////////
 
 var jOrder = function (json, options) {
@@ -269,6 +269,11 @@ jOrder.collection = function ($logging) {
 					return;
 				}
 				return items[name];
+			},
+
+			// returns true if item exists in collection or false otherwise
+			has: function (name) {
+				return items.hasOwnProperty(name);
 			},
 			
 			// clears collection
@@ -1030,7 +1035,7 @@ jOrder.indexes = function ($collection, $index) {
 			options = options || {};
 			
 			// looking up by index
-			if (indexName) {
+			if (self.has(indexName)) {
 				return self.get(indexName);
 			}
 			
@@ -1278,6 +1283,7 @@ jOrder.table = function ($core, $constants, $logging, $indexes, $selectors) {
 			//	 - offset: search offset
 			//	 - limit: munber of rows to return starting from offset
 			where: function (conditions, options) {
+
 				// default options
 				options = options || {};
 				var index = indexes.find(options.indexName || $core.keys(conditions[0])[0] || null, {row: conditions[0]}),
